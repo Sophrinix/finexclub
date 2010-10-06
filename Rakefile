@@ -5,12 +5,17 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "finexclub"
-    gem.summary = %Q{Maintains Forex signals and screenshots}
-    gem.description = %Q{Finexclub gem helps us to run http://trendsonforex.com and http://finexclub.net}
+    gem.summary = %Q{Little helper to maintain Forex signals and screenshots}
+    gem.description = %Q{Finexclub gem stores and retrieves Forex signals and screenshots. It is the heart of the http://trendsonforex.com and http://finexclub.net}
     gem.email = "clubfinex@gmail.com"
     gem.homepage = "http://github.com/alexlevin/finexclub"
     gem.authors = ["Alex Levin"]
-    gem.add_development_dependency "bacon", ">= 0"
+    gem.add_development_dependency "bacon", ">= 1.1.0"
+    gem.add_development_dependency "facon", ">= 0.4.1"
+    gem.add_dependency "mongo", ">= 1.0.8"
+    gem.add_dependency "dragonfly", ">= 0.7.6"
+    gem.add_dependency "sinatra", ">= 1.0.0"
+    gem.add_dependency "awesome_print", ">= 0.2.1"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new

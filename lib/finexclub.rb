@@ -30,8 +30,6 @@ end
 
 autoload_files_in_dir("#{File.dirname(__FILE__)}/finexclub", 'Finexclub')
 
-#require File.dirname(__FILE__) + "/finexclub/mongomatic_ext/base"
-
 require 'forwardable'
 
 module Finexclub
