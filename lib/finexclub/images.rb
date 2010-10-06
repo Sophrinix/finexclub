@@ -13,9 +13,6 @@ module Finexclub
     def initialize(core)
       @core = core
       @app = Dragonfly[:images]
-      @app.configure_with(:rmagick) do |c|
-        c.url_path_prefix = "/media"
-      end
     end
 
     def store(filename)
@@ -23,9 +20,16 @@ module Finexclub
       app.store(File.new(path))
     end
 
+    def configure_endpoint(path_prefix = nil)
+      path_prefix ||= "/media"
+      @app.configure_with(:rmagick) do |c|
+        c.url_path_prefix = path_prefix
+      end
+    end
+
     class Middleware < Dragonfly::Middleware
-      def initialize(app, path_prefix = nil)
-        path_prefix ||= Dragonfly[:images].url_path_prefix
+      def initialize(app)
+        path_prefix = Dragonfly[:images].url_path_prefix
         super(app, :images, path_prefix)
       end
     end
