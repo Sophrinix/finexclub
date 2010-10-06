@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
      "VERSION",
      "bin/finexclub_updater",
      "config.ru",
+     "finexclub.gemspec",
      "lib/finexclub.rb",
      "lib/finexclub/app.rb",
      "lib/finexclub/chart.rb",
