@@ -5,9 +5,9 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "finexclub"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
-    gem.email = "experiment17@gmail.com"
+    gem.summary = %Q{Maintains Forex signals and screenshots}
+    gem.description = %Q{Finexclub gem helps us to run http://trendsonforex.com and http://finexclub.net}
+    gem.email = "clubfinex@gmail.com"
     gem.homepage = "http://github.com/alexlevin/finexclub"
     gem.authors = ["Alex Levin"]
     gem.add_development_dependency "bacon", ">= 0"

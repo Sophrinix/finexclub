@@ -1,0 +1,120 @@
+#!/usr/bin/ruby
+
+require 'rubygems'
+require "net/http"
+require "uri"
+require "cgi"
+require File.dirname(__FILE__) + "/../lib/finexclub"
+require "optparse"
+
+class GenFactory
+  def self.get(gen)
+    case gen
+    when 'alpha'
+      AlphaGen.new
+    when 'zeta'
+      ZetaGen.new
+    end
+  end
+end
+
+class AlphaGen
+  def name
+    'alpha'
+  end
+
+  def generate(options = {})
+    Finexclub::Chart::SYMBOLS.inject([]) do |data, symbol| 
+      data << ["alpha[][symbol]", symbol.upcase]
+      data << ["alpha[][index]", rand(100)]
+      data << ["alpha[][direction]", rand > 0.5? 1 : 0]
+    end
+  end
+end
+
+class ZetaGen
+  def name
+    'zeta'
+  end
+
+  def generate(options = {})
+    symbol = options[:symbol] || raise("ZetaGen :symbol option is missing")
+    data = []
+    data << ["zeta[][symbol]", symbol.upcase]
+    data << ["zeta[][up_support]", rand(10)]
+    data << ["zeta[][up_resist]", rand(10)]
+    data << ["zeta[][down_support]", rand(10)]
+    data << ["zeta[][down_resist]", rand(10)]
+    data << ["zeta[][screenshot_filename]", "#{symbol.upcase}_ZETA.gif"]
+  end
+end
+
+class FakeUpdater
+  def initialize(host, port)
+    @host = host
+    @port = port 
+  end
+
+  def send(generator, options = {})
+    puts "Sending '#{generator.name}' to #{@host}:#{@port}"
+    begin
+      data = join_params(generator.generate(options))
+      http = Net::HTTP.new(@host, @port)
+      response = http.post("/#{generator.name}", data)
+      puts "Done... #{response.value}"
+    rescue Exception => e
+      puts "...Failed!"
+      puts e.message
+    end
+  end
+
+  def join_params(params)
+    params.map {|k,v| "#{CGI::escape(k)}=#{CGI::escape(v.to_s)}"}.join('&')
+  end
+end
+
+options = {}
+options[:host] = 'localhost'
+options[:port] = 9292
+opts = OptionParser.new do |opts|
+  opts.banner = "Usage: fake_updater.rb alpha|zeta|mega_load [options]"
+  
+  opts.on("-a", "--address ADDRESS", "Host to send, default is #{options[:host]}") do |h|
+    options[:host] = h
+  end
+
+  opts.on("-p", "--port PORT", "Use port, default is #{options[:port]}") do |p|
+    options[:port] = p
+  end
+
+  opts.on("-s", "--symbol SYMBOL", "Symbol to use (eurusd, audchf...)") do |s|
+    options[:symbol] = s
+  end
+
+  opts.on_tail("-h", "Help") do |s|
+    puts opts
+    exit
+  end
+
+  opts.on_tail("-g GENERATOR", %w/alpha zeta mega_load/, "One of the generators to send (alpha, zeta)") do |g|
+    options[:generator] = g
+  end
+end
+opts.parse!
+
+case options[:generator]
+when 'alpha', 'zeta'
+  FakeUpdater.new(options[:host], options[:port]).send(GenFactory.get(options[:generator]), options)
+when 'mega_load'
+  f = FakeUpdater.new(options[:host], options[:port])
+  a = AlphaGen.new
+  z = ZetaGen.new
+  f.send(a)
+  Finexclub::Chart::SYMBOLS.each do |symbol|
+    f.send(z, :symbol => symbol)
+  end
+else
+  puts opts
+end
+
+

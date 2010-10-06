@@ -1,8 +1,32 @@
-require 'rubygems'
-require 'bacon'
+require "bacon"
+require "facon"
+require "ap"
+require "timecop"
+require "chronic"
+require File.expand_path(File.dirname(__FILE__) + '/../lib/finexclub')
 
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-require 'finexclub'
+TEST_IMAGES_PATH = File.expand_path(File.dirname(__FILE__) + "/../samples") 
 
-Bacon.summary_on_exit
+class Bacon::Context
+  include Finexclub::Fabrication
+
+  def mock_core(extra_stubs = {})
+    mock('core', {
+      :images => mock('images', :store => 'image_uid'),
+      :signals => mock('signals')
+    }.merge(extra_stubs)
+    )
+  end
+
+  def mock_mongo(extra_stubs = {})
+    mock('mongo', {
+      :collection => mock('collection', :update => true)
+    }.merge(extra_stubs)
+    )
+  end
+
+  def test_core
+    Finexclub::Core.send(:new)
+  end
+end
+
