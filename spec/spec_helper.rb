@@ -1,3 +1,4 @@
+require "rubygems"
 require "bacon"
 require "facon"
 require "ap"
@@ -30,3 +31,4 @@ class Bacon::Context
   end
 end
 
+Bacon.summary_on_exit
