@@ -3,13 +3,13 @@ require File.dirname(__FILE__) + '/../spec_helper'
 describe 'Finexclub::Signals::Alpha' do
   before do
     @core = mock_core
-    @alpha = Finexclub::Signals::Alpha.new(@core)
+    @signal = Finexclub::Signals::Alpha.new(@core)
   end
 
   it 'should provide attribute accessors' do
-    @alpha.build("direction" => 1, "index" => 100)
-    @alpha.direction.should == 1
-    @alpha.index.should == 100
+    @signal.build("direction" => 1, "index" => 100)
+    @signal.direction.should == 1
+    @signal.index.should == 100
   end
 
   {
@@ -18,8 +18,8 @@ describe 'Finexclub::Signals::Alpha' do
     0 => :bearish
   }.each do |direction, trend|
     it "should return #{trend} trend when direction is #{direction}" do
-      @alpha.direction = direction
-      @alpha.trend.should == trend
+      @signal.direction = direction
+      @signal.trend.should == trend
     end
   end
 
@@ -31,17 +31,17 @@ describe 'Finexclub::Signals::Alpha' do
     :unstable => 0..60
   }.each do |stability, range|
     it "should return #{stability} stability when index within #{range}" do
-      @alpha.index = range.first
-      @alpha.stability.should == stability
+      @signal.index = range.first
+      @signal.stability.should == stability
 
-      @alpha.index = range.last
-      @alpha.stability.should == stability
+      @signal.index = range.last
+      @signal.stability.should == stability
     end 
   end
 
   it 'should export valid doc' do
-    @alpha.build("direction" => 1, "index" => 100, "updated" => 123)
-    @alpha.to_doc.should == {:updated => 123, :index => 100, :direction => 1}
+    @signal.build("direction" => 1, "index" => 100, "updated" => 123)
+    @signal.to_doc.should == {:updated => 123, :index => 100, :direction => 1}
   end
 end
 
