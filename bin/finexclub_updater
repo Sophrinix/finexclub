@@ -113,7 +113,7 @@ options = {}
 options[:host] = 'localhost'
 options[:port] = 9292
 opts = OptionParser.new do |opts|
-  opts.banner = "Usage: fake_updater.rb alpha|zeta|mega_load [options]"
+  opts.banner = "Usage: finexclub_updater [options]"
   
   opts.on("-a", "--address ADDRESS", "Host to send, default is #{options[:host]}") do |h|
     options[:host] = h

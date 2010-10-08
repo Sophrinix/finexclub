@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{finexclub}
-  s.version = "0.1.1"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Alex Levin"]
-  s.date = %q{2010-10-06}
+  s.date = %q{2010-10-08}
   s.default_executable = %q{finexclub_updater}
   s.description = %q{Finexclub gem stores and retrieves Forex signals and screenshots. It is the heart of the http://trendsonforex.com and http://finexclub.net}
   s.email = %q{clubfinex@gmail.com}
@@ -38,6 +38,8 @@ Gem::Specification.new do |s|
      "lib/finexclub/manager.rb",
      "lib/finexclub/signal.rb",
      "lib/finexclub/signals/alpha.rb",
+     "lib/finexclub/signals/octopus.rb",
+     "lib/finexclub/signals/prognosis.rb",
      "lib/finexclub/signals/zeta.rb",
      "samples/egg.png",
      "spec/finexclub/alpha_spec.rb",
@@ -47,6 +49,8 @@ Gem::Specification.new do |s|
      "spec/finexclub/document_spec.rb",
      "spec/finexclub/images_spec.rb",
      "spec/finexclub/manager_spec.rb",
+     "spec/finexclub/octopus_spec.rb",
+     "spec/finexclub/prognosis_spec.rb",
      "spec/finexclub/signal_spec.rb",
      "spec/finexclub/zeta_spec.rb",
      "spec/spec_helper.rb"
@@ -57,11 +61,13 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.6}
   s.summary = %q{Little helper to maintain Forex signals and screenshots}
   s.test_files = [
-    "spec/finexclub/signal_spec.rb",
+    "spec/finexclub/octopus_spec.rb",
+     "spec/finexclub/signal_spec.rb",
      "spec/finexclub/manager_spec.rb",
      "spec/finexclub/app_spec.rb",
      "spec/finexclub/alpha_spec.rb",
      "spec/finexclub/core_spec.rb",
+     "spec/finexclub/prognosis_spec.rb",
      "spec/finexclub/images_spec.rb",
      "spec/finexclub/chart_spec.rb",
      "spec/finexclub/document_spec.rb",
