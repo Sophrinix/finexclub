@@ -46,13 +46,6 @@ module Finexclub
       }.merge(options)
     end
 
-    def add_signals
-      Chart::SYMBOLS.each do |symbol|
-        Finexclub.store(:alpha, raw_alpha_hash("symbol"=>symbol.upcase)) 
-        Finexclub.store(:zeta, raw_zeta_hash("symbol"=>symbol.upcase)) 
-      end
-    end
-
     def clear_signals
       Finexclub.signals.collection.remove
     end
