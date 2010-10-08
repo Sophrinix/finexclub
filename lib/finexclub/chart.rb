@@ -15,26 +15,20 @@ module Finexclub
       @signals = {}
     end
 
-    def alpha=(arr)
-      @signals[:alpha]= arr
+    [:alpha, :zeta, :octopus, :prognosis].each do |indicator|
+      define_method("#{indicator}=") do |arr|
+        @signals[indicator] = arr
+      end
+
+      define_method(indicator) do
+        Signal.build(core, indicator, signals(indicator).last)
+      end
     end
 
-    def zeta=(arr)
-      @signals[:zeta]= arr
-    end
-
-    def signals(type)
-      @signals[type]
-    end
-
-    def alpha
-      Signal.build(core, :alpha, signals(:alpha).last)
+    def signals(indicator)
+      @signals[indicator]
     end
     
-    def zeta
-      Signal.build(core, :zeta, signals(:zeta).last)
-    end
-
     def to_doc
       {:symbol => symbol, :date => updated_date}
     end

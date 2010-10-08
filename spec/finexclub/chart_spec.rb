@@ -28,22 +28,33 @@ describe 'Finexclub::Chart' do
       @chart.updated.should == @ts
     end
 
-    it 'should return all alpha signals' do
-      @chart.signals(:alpha).should.equal [@a1, @a2]
-    end
-
-    it 'should return all zeta signals' do
-      @chart.signals(:zeta).should.equal [@z1, @z2]
-    end
-
-    it 'should return latest alpha signal as Alpha' do
-      Finexclub::Signal.should.receive(:build).with(@core, :alpha, @a2).and_return(a = mock('alpha'))
-      @chart.alpha.should == a
-    end
     
     it 'should return latest zeta signals as Zeta' do
       Finexclub::Signal.should.receive(:build).with(@core, :zeta, @z2).and_return(z = mock('zeta'))
       @chart.zeta.should == z
+    end
+  end
+
+  [ 
+    :alpha, 
+    :zeta, 
+    :octopus, 
+    :prognosis
+  ].each do |indicator|
+    describe "#{indicator} signals" do
+      before do
+        @s1, @s2 = mock("signal_#{indicator}_1"), mock("signal_#{indicator}_2")
+        @chart.build(indicator => [@s1, @s2])
+      end
+
+      it "should provide :#{indicator} signals" do
+        @chart.signals(indicator).should == [@s1, @s2]
+      end
+
+      it "should return latest :#{indicator} wrapped as Signal" do
+        Finexclub::Signal.should.receive(:build).with(@core, indicator, @s2).and_return(a = mock('signal'))
+        @chart.send(indicator).should == a
+      end
     end
   end
 
