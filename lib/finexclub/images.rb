@@ -16,8 +16,9 @@ module Finexclub
     end
 
     def store(filename)
-      path = File.expand_path(File.join(screenshot_path, filename))
-      app.store(File.new(path))
+      path = screenshot_path || ""
+      file = File.expand_path(File.join(path, filename))
+      app.store File.new(file)
     end
 
     def configure_endpoint(path_prefix = nil)
