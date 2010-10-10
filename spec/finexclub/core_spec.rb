@@ -1,7 +1,10 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-describe 'Finexclub::Core' do
+Finexclub.configure do |f|
+  f.signals.db = Mongo::Connection.new.db("finexclub_test")
+end
 
+describe 'Finexclub::Core' do
   describe '.instance' do
     it 'should create instance if it does not already exists' do
       app = Finexclub::Core.instance
@@ -64,6 +67,11 @@ describe 'Finexclub::Core' do
     it 'should fetch all charts for given date' do
       @core.signals.should.receive(:find).with({:date => "2010-10-01"}).and_return(c = mock('cursor'))
       @core.find(:all, "2010-10-01").should == c
+    end
+
+    it 'should fetch an array of charts for given date' do
+      @core.signals.should.receive(:find).with({:symbol => {:$in => ["eurusd", "usdjpy"]}, :date => "2010-10-01"}).and_return(c = mock('cursor'))
+      @core.find(["eurusd", "usdjpy"], "2010-10-01").should == c
     end
 
     it 'should allow fetching signals by date and symbol' do

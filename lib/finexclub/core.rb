@@ -24,11 +24,14 @@ module Finexclub
       end
     end
 
-    def find(symbol, date)
-      if symbol == :all
+    def find(symbol_or_array, date)
+      case symbol_or_array
+      when :all
         signals.find(:date => date)
-      else
-        signals.find_one(:date => date, :symbol => symbol)
+      when Array
+        signals.find(:date => date, :symbol => {:$in => symbol_or_array})
+      when String
+        signals.find_one(:date => date, :symbol => symbol_or_array)
       end
     end
   end
