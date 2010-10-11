@@ -8,14 +8,26 @@ require File.dirname(__FILE__) + "/../lib/finexclub"
 require "optparse"
 
 module Generator
-  def self.get(gen)
-    class_name = gen.to_s.gsub(/^(.)/) { $1.upcase }
-    Generator.const_get(class_name).new
+  class << self
+    def get(gen)
+      class_name = gen.to_s.gsub(/^(.)/) { $1.upcase }
+      const_get(class_name).new
+    end
+
+    def all
+      constants.map { |e| e.downcase }
+    end
+
+    def rand_price(n = nil)
+      n ||= 10000
+      rand(n)/n.to_f
+    end
+
+    def rand_index
+      rand(100) 
+    end
   end
 
-  def self.all
-    self.constants.map { |e| e.downcase }
-  end
 
   class Alpha
     def name
@@ -25,7 +37,7 @@ module Generator
     def generate(options = {})
       Finexclub::Chart::SYMBOLS.inject([]) do |data, symbol| 
         data << ["alpha[][symbol]", symbol.upcase]
-        data << ["alpha[][index]", rand(100)]
+        data << ["alpha[][index]", Generator.rand_index]
         data << ["alpha[][direction]", rand > 0.5? 1 : 0]
       end
     end
@@ -40,10 +52,10 @@ module Generator
       symbol = options[:symbol] || raise("--symbol option is missing")
       data = []
       data << ["zeta[][symbol]", symbol.upcase]
-      data << ["zeta[][up_support]", rand(10)]
-      data << ["zeta[][up_resist]", rand(10)]
-      data << ["zeta[][down_support]", rand(10)]
-      data << ["zeta[][down_resist]", rand(10)]
+      data << ["zeta[][up_support]", Generator.rand_price]
+      data << ["zeta[][up_resist]", Generator.rand_price]
+      data << ["zeta[][down_support]", Generator.rand_price]
+      data << ["zeta[][down_resist]", Generator.rand_price]
       data << ["zeta[][screenshot_filename]", "#{symbol.upcase}_ZETA.gif"]
     end
   end
@@ -59,8 +71,8 @@ module Generator
       data = []
       data << ["prognosis[][symbol]", symbol.upcase]
       data << ["prognosis[][action]", actions[rand(actions.size)]]
-      data << ["prognosis[][take_profit]", rand(10)]
-      data << ["prognosis[][profit]", rand(10)]
+      data << ["prognosis[][take_profit]", Generator.rand_price]
+      data << ["prognosis[][profit]", Generator.rand_index]
       data << ["prognosis[][screenshot_filename]", "PROGNOSIS.png"]
     end
   end
@@ -76,11 +88,11 @@ module Generator
       data = []
       data << ["octopus[][symbol]", symbol.upcase]
       data << ["octopus[][action]", actions[rand(actions.size)]]
-      data << ["octopus[][take_profit]", rand(10)]
-      data << ["octopus[][profit]", rand(10)]
-      data << ["octopus[][stop_loss]", rand(10)]
-      data << ["octopus[][loss]", rand(10)]
-      data << ["octopus[][index]", rand(100)]
+      data << ["octopus[][take_profit]", Generator.rand_price]
+      data << ["octopus[][profit]", rand(100)]
+      data << ["octopus[][stop_loss]", Generator.rand_price]
+      data << ["octopus[][loss]", rand(100)]
+      data << ["octopus[][index]", Generator.rand_index]
       data << ["octopus[][screenshot_filename]", "OCTOPUS.png"]
     end
   end

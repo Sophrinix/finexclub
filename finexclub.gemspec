@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Alex Levin"]
-  s.date = %q{2010-10-08}
+  s.date = %q{2010-10-10}
   s.default_executable = %q{finexclub_updater}
   s.description = %q{Finexclub gem stores and retrieves Forex signals and screenshots. It is the heart of the http://trendsonforex.com and http://finexclub.net}
   s.email = %q{clubfinex@gmail.com}

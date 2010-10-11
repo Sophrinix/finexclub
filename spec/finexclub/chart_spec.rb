@@ -27,7 +27,6 @@ describe 'Finexclub::Chart' do
       @chart.date.should == '2010-09-08'
       @chart.updated.should == @ts
     end
-
     
     it 'should return latest zeta signals as Zeta' do
       Finexclub::Signal.should.receive(:build).with(@core, :zeta, @z2).and_return(z = mock('zeta'))
